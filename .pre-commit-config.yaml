@@ -1,0 +1,51 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: check-toml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: detect-private-key
+      - id: check-added-large-files
+        args: ["--maxkb=500"]  # ajuste se precisar
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.12.9
+    hooks:
+      - id: ruff
+        args: ["--fix"]   # aplica autofix quando possível
+      - id: ruff-format
+
+  - repo: https://github.com/JohnnyMorganz/StyLua
+    rev: v2.1.0
+    hooks:
+      - id: stylua # or stylua-system / stylua-github
+        files: \.lua$
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.1
+    hooks:
+      - id: codespell
+        additional_dependencies: ["tomli"]  # silencia warning em pyproject
+        args: ["-L", "crate,clas,iTerm,iTerm2"]  # palavras a ignorar
+
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy (poetry)
+        entry: poetry run mypy
+        language: system
+        types: [python]
+        pass_filenames: true
+        stages: [pre-push]
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest (poetry) – pre-push
+        entry: poetry run pytest -q
+        language: system
+        pass_filenames: false
+        stages: [pre-push]

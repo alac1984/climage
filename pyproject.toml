@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "climage"
+version = "0.1.0"
+description = "A NeoVim plugin to detect images on clipboard and paste them as urls in text files."
+authors = ["André Carvalho <alac1984@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pre-commit = "^4.3.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^4.3.0"
+pytest = "^8.4.2"
+mypy = "^1.18.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
