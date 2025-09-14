@@ -18,14 +18,14 @@ Each phase is broken into **atomic tasks** (`X.Y`) that can be individually trac
 
 ## Phase 1 — UX in Neovim (Lua) ⬜
 
-* **1.1** Create repo structure (`plugin/` and `lua/climage/`) ⬜
-* **1.2** Add formatter/linter setup ⬜
+* **1.1** Create repo structure (`plugin/` and `lua/climage/`) ✅
+* **1.2** Add formatter/linter setup ✅
 
-  * **1.2.1** Configure Stylua locally ⬜
-  * **1.2.2** Add `.stylua.toml` rules ⬜
-  * **1.2.3** Add pre-commit hook ⬜
-  * **1.2.4** Setup GitHub Actions with cache ⬜
-* **1.3** Add boilerplate (`print("climage loaded")`) ⬜
+  * **1.2.1** Configure Stylua locally ✅
+  * **1.2.2** Add `.stylua.toml` rules ✅
+  * **1.2.3** Add pre-commit hook ✅
+  * **1.2.4** Setup GitHub Actions with cache ✅
+* **1.3** Add boilerplate (`print("climage loaded")`) ✅
 * **1.4** Define user commands ⬜
 
   * **1.4.1** Register `:ClimageUpload` ⬜
