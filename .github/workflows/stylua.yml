@@ -1,0 +1,35 @@
+name: Stylua
+on: [push, pull_request]
+
+jobs:
+  stylua-check:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Checkout do código
+      - uses: actions/checkout@v4
+
+      # 2. Instalar Rust (stable)
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      # 3. Restaurar cache do Cargo
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      # 4. Instalar Stylua (só compila se não tiver no cache)
+      - name: Install Stylua
+        run: cargo install stylua --locked --force
+
+      # 5. Rodar Stylua em modo "check"
+      - name: Run Stylua check
+        run: stylua --check -g '*.lua' -g '!*.spec.lua' .
