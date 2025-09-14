@@ -1,0 +1,46 @@
+# ────────── Python ──────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.eggs/
+dist/
+build/
+*.log
+
+# Virtualenvs
+.venv/
+venv/
+ENV/
+env/
+
+# pytest / coverage
+.coverage
+.coverage.*
+.cache/
+.pytest_cache/
+htmlcov/
+
+# Jupyter (caso use pra debug do worker)
+.ipynb_checkpoints/
+
+# ────────── Lua / Neovim ──────────
+# (em geral Lua não gera artefatos binários, mas Neovim pode criar swap/backup)
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# ────────── Editor / IDE ──────────
+.vscode/
+.idea/
+*.iml
+
+# ────────── OS ──────────
+.DS_Store
+Thumbs.db
+
+# ────────── Pre-commit / CI ──────────
+.pre-commit-config.yaml~
