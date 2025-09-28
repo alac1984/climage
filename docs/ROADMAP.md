@@ -26,24 +26,24 @@ Each phase is broken into **atomic tasks** (`X.Y`) that can be individually trac
   * **1.2.3** Add pre-commit hook ✅
   * **1.2.4** Setup GitHub Actions with cache ✅
 * **1.3** Add boilerplate (`print("climage loaded")`) ✅
-* **1.4** Define user commands ⬜
+* **1.4** Define user commands ✅
 
-  * **1.4.1** Register `:ClimageUpload` ⬜
-  * **1.4.2** Register `:ClimageConfig` ⬜
-  * **1.4.3** Point both to stub functions ⬜
-* **1.5** Async integration with worker ⬜
+  * **1.4.1** Register `:ClimageUpload` ✅
+  * **1.4.2** Register `:ClimageConfig` ✅
+  * **1.4.3** Point both to stub functions ✅
+* **1.5** Async integration with worker ✅
 
-  * **1.5.1** Spawn Python subprocess ⬜
-  * **1.5.2** Capture stdout/stderr ⬜
-  * **1.5.3** Parse response (mock JSON) ⬜
-* **1.6** Show UX feedback in Neovim ⬜
+  * **1.5.1** Spawn Python subprocess ✅
+  * **1.5.2** Capture stdout/stderr ✅
+  * **1.5.3** Parse response (mock JSON) ✅
+* **1.6** Show UX feedback in Neovim ✅
 
-  * **1.6.1** Show success notification (`vim.notify`) ⬜
-  * **1.6.2** Show error notification ⬜
+  * **1.6.1** Show success notification (`vim.notify`) ✅
+  * **1.6.2** Show error notification ✅
   * **1.6.3** Provide log/debug command (`:ClimageLogs`) ⬜
 * **1.7** Insert mock URL into buffer ⬜
 
-  * **1.7.1** Place cursor snippet insertion ⬜
+  * **1.7.1** Place cursor snippet insertion ✅
   * **1.7.2** Validate Markdown output ⬜
   * **1.7.3** Support HTML as optional ⬜
 
