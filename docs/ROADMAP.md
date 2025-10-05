@@ -40,7 +40,7 @@ Each phase is broken into **atomic tasks** (`X.Y`) that can be individually trac
 
   * **1.6.1** Show success notification (`vim.notify`) ✅
   * **1.6.2** Show error notification ✅
-  * **1.6.3** Provide log/debug command (`:ClimageLogs`) ⬜
+  * **1.6.3** Provide log/debug command (`:ClimageLogs`) ✅
 * **1.7** Insert mock URL into buffer ⬜
 
   * **1.7.1** Place cursor snippet insertion ✅
