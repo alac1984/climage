@@ -44,7 +44,7 @@ Each phase is broken into **atomic tasks** (`X.Y`) that can be individually trac
 * **1.7** Insert mock URL into buffer ⬜
 
   * **1.7.1** Place cursor snippet insertion ✅
-  * **1.7.2** Validate Markdown output ⬜
+  * **1.7.2** Validate Markdown output ✅
   * **1.7.3** Support HTML as optional ⬜
 
 ---

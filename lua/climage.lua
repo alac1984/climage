@@ -3,13 +3,34 @@
 -- Importing RingBuffer
 local RingBuffer = require("climage.logs")
 
-rb = RingBuffer.new(20)
+rb = RingBuffer.new(50)
 
 -- Utility: default title for notifications
 local function log(msg, level)
-    rb:push(msg)
+    -- Se a mensagem tiver múltiplas linhas, separa
+    if type(msg) == "string" and msg:find("\n") then
+        for line in msg:gmatch("[^\n]+") do
+            rb:push(line)
+        end
+    else
+        rb:push(msg)
+    end
     vim.notify(msg, level or vim.log.levels.INFO, { title = "Climage" })
 end
+
+-- Utility: convert image url to Markdown
+local function to_markdown(text)
+    local url = text
+    local path = url:match("^[^%?#]+") or url -- remove ?query and #hash
+    local base = path:match("([^/]+)$") -- everything after the last /
+    local img_name = base:match("^(.*)%.([^%.]+)$") -- before the last .
+    if not img_name then
+        img_name = "image"
+    end
+    return "![" .. img_name .. "](" .. url .. ")"
+end
+
+-- Utility: convert image url to img tag
 
 -- Discover paths based on this file:
 -- this file is located at: <repo>/lua/climage/climage.lua
@@ -77,11 +98,53 @@ vim.api.nvim_create_user_command("ClimageUpload", function()
             local pos_row, pos_col = unpack(pos)
             log("Extmark position: " .. "row=" .. tostring(pos_row) .. "/" .. "col=" .. tostring(pos_col))
 
+            -- Convert url outputs
+            local formatted_url = ""
+            if result["output"] == "markdown" then
+                formatted_url = to_markdown(result["url"])
+            else
+                formatted_url = result["url"]
+            end
+
             -- Delete the extmark and insert the URL
             vim.api.nvim_buf_del_extmark(0, ns, mark_id)
-            if status then
-                vim.api.nvim_buf_set_text(bufnr, pos_row, pos_col, pos_row, pos_col, { result["url"] })
+
+            -- Result sanity
+            if not status or type(result) ~= "table" then
+                log("Worker JSON invalid.", vim.log.levels.ERROR)
+                vim.api.nvim_buf_del_extmark(0, ns, mark_id)
+                return
             end
+            if result.ok == false then
+                log("Worker failed: " .. tostring(result.error or "no details"), vim.log.levels.ERROR)
+                vim.api.nvim_buf_del_extmark(0, ns, mark_id)
+                return
+            end
+            local url = result.url
+            if type(url) ~= "string" or url == "" then
+                log("No URL output on Worker result", vim.log.levels.ERROR)
+                vim.api.nvim_buf_del_extmark(0, ns, mark_id)
+                return
+            end
+
+            -- Normalize output choice
+            local out = tostring(result.output or "plain"):lower()
+            local formatted = url
+            if out == "markdown" then
+                formatted = to_markdown(url)
+
+                -- validação mais tolerante: apenas checa forma geral e esquema
+                local ok_md = formatted:match("^%!%[[^%]]+%]%(%S+%)$")
+                local scheme_ok = url:match("^https?://") or url:match("^data:")
+                if not (ok_md and scheme_ok) then
+                    log("Markdown snippet invalid; fallback for plain.", vim.log.levels.WARN)
+                    formatted = url
+                end
+            end
+
+            -- Insertion after validation and normalization
+            vim.api.nvim_buf_del_extmark(0, ns, mark_id)
+            vim.api.nvim_buf_set_text(bufnr, pos_row, pos_col, pos_row, pos_col, { formatted })
         end,
         on_stderr = function(_, data, _)
             local lines = nonempty_lines(data)
@@ -111,7 +174,16 @@ end, { nargs = "?" })
 
 vim.api.nvim_create_user_command("ClimageLogs", function(opts)
     log("Opening logs… arg: " .. (opts.args or ""))
-    local lines = rb:items()
+    local lines = {}
+    for _, item in ipairs(rb:items()) do
+        if type(item) == "string" and item:find("\n") then
+            for line in item:gmatch("[^\n]+") do
+                table.insert(lines, line)
+            end
+        else
+            table.insert(lines, tostring(item))
+        end
+    end
     local buf = vim.api.nvim_create_buf(false, true) -- listed=false, scratch=true
     vim.bo[buf].buftype = "nofile"
     vim.bo[buf].bufhidden = "wipe"

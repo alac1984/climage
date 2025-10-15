@@ -8,6 +8,7 @@ DUMMY_OK = {
     "size": 34567,
     "format": "png",
     "backend": "mock",
+    "output": "markdown",
 }
 
 DUMMY_ERROR = {"ok": False, "error": "explanation string", "stage": "mock"}
