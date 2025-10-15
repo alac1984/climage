@@ -106,9 +106,6 @@ vim.api.nvim_create_user_command("ClimageUpload", function()
                 formatted_url = result["url"]
             end
 
-            -- Delete the extmark and insert the URL
-            vim.api.nvim_buf_del_extmark(0, ns, mark_id)
-
             -- Result sanity
             if not status or type(result) ~= "table" then
                 log("Worker JSON invalid.", vim.log.levels.ERROR)
@@ -143,7 +140,7 @@ vim.api.nvim_create_user_command("ClimageUpload", function()
             end
 
             -- Insertion after validation and normalization
-            vim.api.nvim_buf_del_extmark(0, ns, mark_id)
+            vim.api.nvim_buf_del_extmark(bufnr, ns, mark_id)
             vim.api.nvim_buf_set_text(bufnr, pos_row, pos_col, pos_row, pos_col, { formatted })
         end,
         on_stderr = function(_, data, _)
